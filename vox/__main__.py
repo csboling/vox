@@ -1,11 +1,17 @@
-from vox.data.vocobox import VocoboxDataFlow
+from tensorpack.dataflow import RandomMixData
+
+from vox.data.wav import WavDataFlow
 from vox.preview import Previewer
 
 
 def main():
-    Previewer().preview(
-        # TIMITDataFlow('~/datasets/TIMIT/data/lisa/data/timit/raw/TIMIT/TRAIN')
-        VocoboxDataFlow('~/datasets/human-voice-dataset/data/voices/martin/notes/exports/stereo')
+    ds = RandomMixData(
+        [
+            WavDataFlow('~/datasets/birdsong/'),
+            WavDataFlow('~/datasets/human-voice-dataset/data/voices')
+        ]
     )
+    ds.reset_state()
+    Previewer(dev_ixs=[0,1]).preview(ds)
 
 main()
