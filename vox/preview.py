@@ -44,15 +44,6 @@ class Previewer:
 
     def preview(self, dataflow):
         loop = asyncio.get_event_loop()
-        for signal, *rest in dataflow.get_data():
-            loop.run_until_complete(self.broadcast(signal))
-            # for device_ix in device_ixs:
-            # stream = p.open(
-            #     output_device_index=0,
-            #     format=self.types[signal.dtype.name],
-            #     channels=1, 
-            #     rate=44100,
-            #     output=True
-            # )
-            # stream.write(signal)
-            # stream.close()
+        while True:
+            for signal, *rest in dataflow.get_data():
+                loop.run_until_complete(self.broadcast(signal))
