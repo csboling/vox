@@ -20,7 +20,7 @@ class Previewer:
         stream = self.backend.open(
             output_device_index=dev_ix,
             format=self.types[arr.dtype.name],
-            channels=1 if arr.ndim == 1 else arr.shape[-1],
+            channels=arr.shape[-1],
             rate=44100,
             output=True
         )
