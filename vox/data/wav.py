@@ -5,12 +5,13 @@ import os
 import random
 import time
 
-# from madmom.audio import signal
 import numpy as np
 from pydub import AudioSegment
 from tensorpack.utils.argtools import memoized
 
 from vox.data.FSDataFlow import FSDataFlow
+from vox.utils import match_target_amplitude
+
 
 class WavDataFlow(FSDataFlow):
 
@@ -87,11 +88,6 @@ class WavDataFlow(FSDataFlow):
             None
         )
 
-    @staticmethod
-    def match_target_amplitude(sound, target_dBFS):
-        change_in_dBFS = target_dBFS - sound.dBFS
-        return sound.apply_gain(change_in_dBFS)
-
     samples_per_ms = 44100 / 1000
             
     def get_data(self):
@@ -99,7 +95,7 @@ class WavDataFlow(FSDataFlow):
             print()
             print('{} ch @ {} Hz'.format(seg.channels, seg.frame_rate))
             frames = (
-                self.match_target_amplitude(seg, -20)
+                match_target_amplitude(seg, -20)
                 .set_frame_rate(44100)
                 .fade_in(100)
                 .fade_out(100)
